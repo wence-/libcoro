@@ -6,6 +6,7 @@
 #include <atomic>
 #include <condition_variable>
 #include <exception>
+#include <iostream>
 #include <mutex>
 #include <stdexcept>
 #include <variant>
@@ -116,7 +117,8 @@ public:
 
     auto unhandled_exception() noexcept -> void
     {
-        m_storage.template emplace<std::exception_ptr>(std::current_exception());
+      std::cerr << "sync_wait_task_promise saw exception" << std::endl;
+      std::terminate();
     }
 
     auto final_suspend() noexcept
@@ -237,7 +239,11 @@ public:
         return completion_notifier{};
     }
 
-    auto unhandled_exception() -> void { m_exception = std::current_exception(); }
+    auto unhandled_exception() -> void
+    {
+      std::cerr << "sync_wait_task_promise saw exception" << std::endl;
+      std::terminate();
+ }
 
     auto return_void() noexcept -> void {}
 

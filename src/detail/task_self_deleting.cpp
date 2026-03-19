@@ -1,5 +1,7 @@
 #include "coro/detail/task_self_deleting.hpp"
 
+#include <iostream>
+#include <ostream>
 #include <utility>
 
 namespace coro::detail
@@ -49,6 +51,8 @@ auto promise_self_deleting::return_void() noexcept -> void
 
 auto promise_self_deleting::unhandled_exception() -> void
 {
+    std::cerr << "promise_self_deleting saw exception" << std::endl;
+    std::terminate();
     // The user cannot access the promise anyway, ignore the exception.
 }
 

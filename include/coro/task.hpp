@@ -2,6 +2,7 @@
 
 #include <coroutine>
 #include <exception>
+#include <iostream>
 #include <stdexcept>
 #include <utility>
 #include <variant>
@@ -116,7 +117,8 @@ public:
 
     auto unhandled_exception() noexcept -> void
     {
-        m_storage.template emplace<std::exception_ptr>(std::current_exception());
+      std::cerr << "promise saw exception" << std::endl;
+      std::terminate();
     }
 
     auto result() & -> decltype(auto)
@@ -213,7 +215,11 @@ struct promise<void> : public promise_base
 
     auto return_void() noexcept -> void {}
 
-    auto unhandled_exception() noexcept -> void { m_exception_ptr = std::current_exception(); }
+    auto unhandled_exception() noexcept -> void
+    {
+      std::cerr << "promise saw exception" << std::endl;
+      std::terminate();
+    }
 
     auto result() -> void
     {

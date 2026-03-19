@@ -7,6 +7,7 @@
 #include <atomic>
 #include <cassert>
 #include <coroutine>
+#include <iostream>
 #include <ranges>
 #include <tuple>
 #include <vector>
@@ -275,7 +276,11 @@ public:
         return completion_notifier{};
     }
 
-    auto unhandled_exception() noexcept { m_exception_ptr = std::current_exception(); }
+    auto unhandled_exception() noexcept
+    {
+      std::cerr << "when_all_task_promise saw exception" << std::endl;
+      std::terminate();
+    }
 
     auto yield_value(return_type&& value) noexcept
     {
@@ -348,7 +353,11 @@ public:
         return completion_notifier{};
     }
 
-    auto unhandled_exception() noexcept -> void { m_exception_ptr = std::current_exception(); }
+    auto unhandled_exception() noexcept -> void
+    {
+      std::cerr << "when_all_task_promise saw exception" << std::endl;
+      std::terminate();
+    }
 
     auto return_void() noexcept -> void {}
 

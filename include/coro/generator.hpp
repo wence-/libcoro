@@ -2,6 +2,7 @@
 
 #include <coroutine>
 #include <exception>
+#include <iostream>
 #include <iterator>
 #include <memory>
 #include <type_traits>
@@ -43,7 +44,11 @@ public:
         return std::suspend_always{};
     }
 
-    auto unhandled_exception() -> void { m_exception = std::current_exception(); }
+    auto unhandled_exception() -> void
+    {
+        std::cerr << "generator_promise saw exception" << std::endl;
+        std::terminate();
+    }
 
     auto return_void() noexcept -> void {}
 
